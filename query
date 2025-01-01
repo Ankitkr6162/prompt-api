@@ -1,0 +1,95 @@
+-- Create ebo_gm_package
+CREATE TABLE ebo_gm_package (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    PackageID INT NOT NULL,
+    PackageName VARCHAR(32) NOT NULL,
+    PackageDesc VARCHAR(128),
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    ModifiedDate DATETIME DEFAULT GETDATE(),
+    ActiveFlag INT,
+    DeleteFlag INT,
+    ReportCount INT,
+    PackageYear INT,
+    SequenceNo INT NULL
+);
+
+-- Create ebo_gm_report
+CREATE TABLE ebo_gm_report (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    PackageID INT,
+    ReportID INT,
+    ReportName VARCHAR(32) NOT NULL,
+    ReportDesc VARCHAR(128),
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    ModifiedDate DATETIME DEFAULT GETDATE(),
+    ActiveFlag INT,
+    DeleteFlag INT
+);
+
+-- Create ebo_gm_cat_queries
+CREATE TABLE ebo_gm_cat_queries (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    QueryID INT,
+    mssql_query VARCHAR(5000),
+    mysql_query VARCHAR(5000),
+    CatID INT,
+    ActiveFlag INT,
+    DeleteFlag INT,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    ModifiedDate DATETIME DEFAULT GETDATE()
+);
+
+-- Create ebo_gm_category
+CREATE TABLE ebo_gm_category (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    CatID INT,
+    CategoryName VARCHAR(32),
+    QueryID INT,
+    ActiveFlag INT,
+    DeleteFlag INT,
+	Tag VARCHAR(255) NULL,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    ModifiedDate DATETIME DEFAULT GETDATE()
+);
+
+-- Create ebo_gm_filter_value
+CREATE TABLE ebo_gm_filter_value (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    PackageID INT,
+    ReportID INT,
+    CatID INT,
+    CategoryName VARCHAR(32),
+	FilterValue INT,
+    Tags VARCHAR(255) NULL,
+    SequenceNo INT NULL,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    CreatedByUserID INT,
+    ModifiedDate DATETIME DEFAULT GETDATE(),
+    ModifiedByUserID INT
+);
+-- Create ebo_gm_map_value
+CREATE TABLE ebo_gm_map_value (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    PackageID INT,
+    ReportID INT,
+    CatID INT,
+    CategoryName VARCHAR(32),
+    MapID INT,
+    MapName VARCHAR(MAX),
+    map_value_code1 VARCHAR(32),
+    map_value_code2 VARCHAR(32),
+    Tags VARCHAR(255) NULL,
+    SequenceNo INT NULL,
+    CreatedDate DATETIME DEFAULT GETDATE(),
+    CreatedByUserID INT,
+    ModifiedDate DATETIME DEFAULT GETDATE(),
+    ModifiedByUserID INT
+);
+-- Create ebo_gm_ui_fields
+CREATE TABLE ebo_gm_ui_fields (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    QID INT,
+    Fields VARCHAR(255),
+    DisplayName VARCHAR(255)
+);
+
