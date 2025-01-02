@@ -21,3 +21,19 @@ public class StatusController {
         return ResponseEntity.ok("Status updated successfully");
     }
 }
+
+
+
+
+
+
+{
+    "packages": [
+        { "packageID": 101, "activeFlag": 1 },
+        { "packageID": 102, "activeFlag": 0 }
+    ],
+    "reports": [
+        { "reportID": 201, "activeFlag": 1 },
+        { "reportID": 202, "activeFlag": 1 }
+    ]
+}
