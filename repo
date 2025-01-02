@@ -1,0 +1,47 @@
+package com.ankit.repository;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.ankit.dto.PackageUpdateRequest;
+import com.ankit.dto.ReportUpdateRequest;
+
+@Repository
+public class StatusDao {
+
+    @Autowired
+    private NamedParameterJdbcTemplate jdbcTemplate;
+
+    // Update packages
+    public void updatePackages(List<PackageUpdateRequest> packages) {
+        String sql = "UPDATE ebo_gm_package SET ActiveFlag = :ActiveFlag, ModifiedDate = NOW() WHERE PackageID = :PackageID";
+        List<Map<String, Object>> batchValues = new ArrayList<>();
+        for (PackageUpdateRequest pkg : packages) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("ActiveFlag", pkg.getActiveFlag());
+            params.put("PackageID", pkg.getPackageID());
+            batchValues.add(params);
+        }
+        jdbcTemplate.batchUpdate(sql, batchValues.toArray(new Map[0]));
+    }
+
+    // Update reports
+    public void updateReports(List<ReportUpdateRequest> reports) {
+        String sql = "UPDATE ebo_gm_report SET ActiveFlag = :ActiveFlag, ModifiedDate = NOW() WHERE ReportID = :ReportID";
+        List<Map<String, Object>> batchValues = new ArrayList<>();
+        for (ReportUpdateRequest report : reports) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("ActiveFlag", report.getActiveFlag());
+            params.put("ReportID", report.getReportID());
+            batchValues.add(params);
+        }
+        jdbcTemplate.batchUpdate(sql, batchValues.toArray(new Map[0]));
+    }
+}
+
