@@ -1,0 +1,96 @@
+package com.ankit.dto;
+
+import java.util.List;
+
+public class UpdateStatusRequest {
+
+	 private List<PackageUpdateRequest> packages;
+	    private List<ReportUpdateRequest> reports;
+	    
+	    
+		public List<PackageUpdateRequest> getPackages() {
+			return packages;
+		}
+		public void setPackages(List<PackageUpdateRequest> packages) {
+			this.packages = packages;
+		}
+		public List<ReportUpdateRequest> getReports() {
+			return reports;
+		}
+		public void setReports(List<ReportUpdateRequest> reports) {
+			this.reports = reports;
+		}
+	      
+	
+}
+
+
+
+
+
+
+
+package com.ankit.dto;
+
+public class ReportUpdateRequest {
+
+	
+	private int reportID;
+    private int activeFlag;
+    
+    
+	public int getReportID() {
+		return reportID;
+	}
+	public void setReportID(int reportID) {
+		this.reportID = reportID;
+	}
+	public int getActiveFlag() {
+		return activeFlag;
+	}
+	public void setActiveFlag(int activeFlag) {
+		this.activeFlag = activeFlag;
+	}
+    
+    
+    
+    
+}
+
+
+
+
+
+
+
+
+
+
+package com.ankit.dto;
+
+public class PackageUpdateRequest {
+	
+    private int packageID;
+    private int activeFlag;
+    
+    
+	public int getPackageID() {
+		return packageID;
+	}
+	public void setPackageID(int packageID) {
+		this.packageID = packageID;
+	}
+	public int getActiveFlag() {
+		return activeFlag;
+	}
+	public void setActiveFlag(int activeFlag) {
+		this.activeFlag = activeFlag;
+	}
+    
+    
+    
+	
+    
+    
+
+}
