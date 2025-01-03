@@ -45,3 +45,142 @@ public class StatusDao {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+package com.ankit.repository;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.ankit.dto.PackageUpdateRequest;
+import com.ankit.dto.ReportUpdateRequest;
+
+@Repository
+public class StatusDao {
+
+    @Autowired
+    private NamedParameterJdbcTemplate jdbcTemplate;
+
+//    // Update packages
+//    public void updatePackages(List<PackageUpdateRequest> packages) {
+//        String sql = "UPDATE ebo_gm_package SET ActiveFlag = :ActiveFlag, ModifiedDate = NOW() WHERE PackageID = :PackageID";
+//        List<Map<String, Object>> batchValues = new ArrayList<>();
+//        for (PackageUpdateRequest pkg : packages) {
+//            Map<String, Object> params = new HashMap<>();
+//            params.put("ActiveFlag", pkg.getActiveFlag());
+//            params.put("PackageID", pkg.getPackageID());
+//            batchValues.add(params);
+//        }
+//        jdbcTemplate.batchUpdate(sql, batchValues.toArray(new Map[0]));
+//    }
+//
+//    // Update reports
+//    public void updateReports(List<ReportUpdateRequest> reports) {
+//        String sql = "UPDATE ebo_gm_report SET ActiveFlag = :ActiveFlag, ModifiedDate = NOW() WHERE ReportID = :ReportID";
+//        List<Map<String, Object>> batchValues = new ArrayList<>();
+//        for (ReportUpdateRequest report : reports) {
+//            Map<String, Object> params = new HashMap<>();
+//            params.put("ActiveFlag", report.getActiveFlag());
+//            params.put("ReportID", report.getReportID());
+//            batchValues.add(params);
+//        }
+//        jdbcTemplate.batchUpdate(sql, batchValues.toArray(new Map[0]));
+//    }
+    
+    
+    
+    
+    public void updatePackages(List<PackageUpdateRequest> packages) {
+        String sql = "UPDATE ebo_gm_package " +
+                     "SET ActiveFlag = :ActiveFlag, ModifiedDate = NOW() " +
+                     "WHERE PackageID IN (:PackageIDs)";
+
+        // Group PackageIDs by ActiveFlag
+        Map<Integer, List<Integer>> groupedPackages = packages.stream()
+                .collect(Collectors.groupingBy(
+                        PackageUpdateRequest::getActiveFlag,
+                        Collectors.mapping(PackageUpdateRequest::getPackageID, Collectors.toList())
+                ));
+
+        // Execute one update query per ActiveFlag group
+        for (Map.Entry<Integer, List<Integer>> entry : groupedPackages.entrySet()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("ActiveFlag", entry.getKey());
+            params.put("PackageIDs", entry.getValue());
+            jdbcTemplate.update(sql, params);
+        }
+    }
+
+    // Update reports by grouping ReportIDs by ActiveFlag
+    public void updateReports(List<ReportUpdateRequest> reports) {
+        String sql = "UPDATE ebo_gm_report " +
+                     "SET ActiveFlag = :ActiveFlag, ModifiedDate = NOW() " +
+                     "WHERE ReportID IN (:ReportIDs)";
+
+        // Group ReportIDs by ActiveFlag
+        Map<Integer, List<Integer>> groupedReports = reports.stream()
+                .collect(Collectors.groupingBy(
+                        ReportUpdateRequest::getActiveFlag,
+                        Collectors.mapping(ReportUpdateRequest::getReportID, Collectors.toList())
+                ));
+
+        // Execute one update query per ActiveFlag group
+        for (Map.Entry<Integer, List<Integer>> entry : groupedReports.entrySet()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("ActiveFlag", entry.getKey());
+            params.put("ReportIDs", entry.getValue());
+            jdbcTemplate.update(sql, params);
+        }
+    }    
+}
+
+
